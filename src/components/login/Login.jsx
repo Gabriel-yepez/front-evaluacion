@@ -2,11 +2,13 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useState } from 'react'
+import Cargando from './Cargando';
 
 export default function Login() {
 
   const router= useRouter()//enrutamiento
+  const [loading, setLoading]= useState(false) //estado de carga
 
   async function handlesubmit(event){
 
@@ -24,14 +26,23 @@ export default function Login() {
 
         if(response.ok){ //si el usuario es correcto pasa al dashboard
 
+          setLoading(true)
+
+          setTimeout(() => {
           toast.success('Inicio de sesion exitoso')     
-          router.push('/dashboard')   
+          router.push('/dashboard')
+          }, 3000)   
         } //si no decimos que los datos estan incorrectos
         else toast.error('Datos invalidos')
     }
 
   return (
     <div>
+
+      {loading 
+      
+      ? (<Cargando/>)
+      :(
       <div className=" flex h-screen">
 
         <div className="flex flex-col bg-gradient-to-b from-indigo-500 to-indigo-300 w-1/2 justify-center items-center p-8">
@@ -92,7 +103,7 @@ export default function Login() {
         </div>
         
       </div>
-     
+      )}
     </div>
   )
 }
